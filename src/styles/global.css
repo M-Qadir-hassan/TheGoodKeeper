@@ -39,7 +39,7 @@
 
 .section-container {
 
-  @apply max-w-300px mx-auto px-6 sm:px-8 w-full;
+  @apply max-w-1400 mx-auto px-6 sm:px-8 w-full;
 
 }
 
