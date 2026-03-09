@@ -4,7 +4,7 @@ name: Deploy Astro site to GitHub Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["main"] # Or "master", check your default branch name
+    branches: ["master"] # Or "master", check your default branch name
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
