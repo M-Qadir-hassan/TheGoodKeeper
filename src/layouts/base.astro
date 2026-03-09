@@ -1,0 +1,30 @@
+---
+import "../styles/global.css";
+import Navigation from "../components/navigation.astro";
+import Hero from "../components/hero.astro"; // 1. Import the Hero
+const { title = "My Astro Site" } = Astro.props;
+const {
+  heroTitle = "Welcome to My Site", 
+  heroMessage = "Default subtitle if nothing is provided.",
+  buttonPrime = "read blog",
+  buttonSecond = "learn more"
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+    <head class="w-full">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{title}</title>
+    </head>
+    <body class="bg-gray-50">
+        <header>
+            <Navigation />
+            <Hero title={heroTitle} text={heroMessage} primaryBtn= {buttonPrime} SecondaryBtn = {buttonSecond} />
+        </header>
+        <main class="max-w-5xl mx-auto p-6">
+            <slot />
+        </main>
+    </body>
+</html>
