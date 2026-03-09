@@ -1,0 +1,20 @@
+---
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact" },
+];
+---
+
+<nav class="grid grid-cols-2 section-container py-5" >
+  <div class="justify-self-start">Logo</div>
+  
+  <ul class="justify-self-end items-center gap-3 hidden  md:flex">
+    {navItems.map(({ label, href }) => (
+      <li><a href={href}>{label}</a></li>
+    ))}
+  </ul>
+
+</nav>

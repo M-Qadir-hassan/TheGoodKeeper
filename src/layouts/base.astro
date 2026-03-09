@@ -1,30 +1,130 @@
 ---
-import "../styles/global.css";
-import Navigation from "../components/navigation.astro";
-import Hero from "../components/hero.astro"; // 1. Import the Hero
-const { title = "My Astro Site" } = Astro.props;
+import '../styles/global.css';
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;         // OG/Twitter card image URL
+  imageAlt?: string;
+  canonical?: string;     // Override canonical URL if needed
+  type?: "website" | "article";
+  publishedAt?: string;   // ISO date for articles
+  modifiedAt?: string;    // ISO date for articles
+  noindex?: boolean;      // Block indexing on specific pages
+  schema?: object;        // Pass custom JSON-LD from any page
+}
+
 const {
-  heroTitle = "Welcome to My Site", 
-  heroMessage = "Default subtitle if nothing is provided.",
-  buttonPrime = "read blog",
-  buttonSecond = "learn more"
+  title,
+  description = "Your default site description goes here. Keep it between 120–160 characters for best SERP display.",
+  image = "/og-default.png",
+  imageAlt = "Brand", 
+  canonical,
+  type = "website",
+  publishedAt,
+  modifiedAt,
+  noindex = false,
+  schema,
 } = Astro.props;
+
+const siteUrl    = import.meta.env.SITE ?? "https://yourdomain.com";
+const siteName   = "TheGoodKeeper";
+const siteHandle = "@yourbrand"; // Twitter handle
+
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
+const ogImage      = image.startsWith("http") ? image : new URL(image, siteUrl).href;
+
+// Full page title — append site name unless it's already in the title
+const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
+
+// Default Organization schema — merged with any page-level schema
+const defaultSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": siteName,
+  "url": siteUrl,
+  "logo": `${siteUrl}/logo.png`,
+  "sameAs": [
+    "https://twitter.com/yourbrand",
+    "https://linkedin.com/company/yourbrand",
+  ],
+};
+
+const jsonLd = schema ?? defaultSchema;
+
+
 ---
 
 <!doctype html>
-<html lang="en">
-    <head class="w-full">
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{title}</title>
-    </head>
-    <body class="bg-gray-50">
-        <header>
-            <Navigation />
-            <Hero title={heroTitle} text={heroMessage} primaryBtn= {buttonPrime} SecondaryBtn = {buttonSecond} />
-        </header>
-        <main class="max-w-5xl mx-auto p-6">
-            <slot />
-        </main>
-    </body>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!--2. SEO CORE -->
+
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+
+  <!-- Indexing control -->
+  {noindex
+    ? <meta name="robots" content="noindex, nofollow" />
+    : <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  }
+
+  <!-- ═══════════════════════════════════════════
+3. OPEN GRAPH (Facebook, LinkedIn, WhatsApp, Slack…)
+  ═══════════════════════════════════════════ -->
+  <meta property="og:type"        content={type} />
+  <meta property="og:url"         content={canonicalUrl} />
+  <meta property="og:title"       content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image"       content={ogImage} />
+  <meta property="og:image:alt"   content={imageAlt} />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name"   content={siteName} />
+  <meta property="og:locale"      content="en_US" />
+
+  <!-- Article-specific OG (only emitted when type="article") -->
+  {type === "article" && publishedAt && (
+    <meta property="article:published_time" content={publishedAt} />
+  )}
+  {type === "article" && modifiedAt && (
+    <meta property="article:modified_time" content={modifiedAt} />
+  )}
+
+  <!-- ═══════════════════════════════════════════
+       4. TWITTER / X CARD
+  ═══════════════════════════════════════════ -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content={siteHandle} />
+  <meta name="twitter:creator"     content={siteHandle} />
+  <meta name="twitter:title"       content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image"       content={ogImage} />
+  <meta name="twitter:image:alt"   content={imageAlt} />
+
+  <!--5. FAVICONS & APP ICONS Generate at: https://favicon.io or https://realfavicongenerator.net-->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest"href="/site.webmanifest" />
+  <meta name="theme-color"content="#89d957" />
+
+  <!--6. PERFORMANCE — preconnect, DNS-prefetch Add any third-party origins you load assets from-->
+  <link rel="preconnect"    href="https://fonts.googleapis.com" />
+  <link rel="preconnect"    href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch"  href="https://fonts.googleapis.com" />
+
+  <!--7. STRUCTURED DATA (JSON-LD) Parsed by Google/Bing without rendering — zero perf cost -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+</head>
+
+<body class="bg-surface-50 text-brand-dark font-body antialiased selection:bg-brand-primary/30 overflow-x-hidden">
+
+  <slot />
+
+</body>
 </html>

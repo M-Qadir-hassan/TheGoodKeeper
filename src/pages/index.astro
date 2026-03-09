@@ -1,6 +1,82 @@
 ---
-import BaseLayout from '../layouts/base.astro';
----
-<BaseLayout title="Home">
+import Layout from "../layouts/base.astro";
+import Navbar from "../components/Universal/navigation.astro";
+import Heroimg from "../components/Hero/heroImage.astro";
 
-</BaseLayout>
+const homeSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "The Goodkeeper",
+    description: "High-performance digital solutions for modern brands.",
+    url: "https://yourdomain.com",
+};
+---
+
+<Layout
+    title="Home"
+    description="The Goodkeeper specializes in building trust through flawless web speed and modern glassmorphism design. Experience the future of web performance."
+    schema={homeSchema}
+>
+    <header class=" flex flex-col overflow-hidden">
+        <Navbar />
+
+        <section id="Hero" class="grow min-h-0 section-container flex items-center -mt-4 section-spacer">
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+
+                <!-- LEFT: Copy -->
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
+
+                    <!-- Badge -->
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-dark text-xs sm:text-sm font-semibold mb-8 shadow-sm">
+                        <span class="relative flex h-2.5 w-2.5 shrink-0">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-primary"></span>
+                        </span>
+                        Financial Integrity & Growth
+                    </div>
+
+                    <!-- Heading -->
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-display font-bold tracking-tight text-brand-dark leading-[1.1] mb-6">
+                        Your books, <br class="hidden sm:block" />
+                        <span class="text-transparent bg-clip-text bg-linear-brand">perfectly kept.</span>
+                    </h1>
+
+                    <!-- Body -->
+                    <p class="text-base sm:text-lg text-gray-500 mb-10 max-w-md leading-relaxed">
+                        We unburden your business from the chaos of bookkeeping. Get
+                        crystal-clear financial statements that satisfy auditors and
+                        empower your growth.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto mb-12">
+                        <a
+                            href="/get-started"
+                            class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-linear-brand text-brand-dark font-bold shadow-trust hover:scale-105 transition-all duration-500 ease-spring text-center text-sm"
+                        >
+                            Unburden My Books
+                        </a>
+                        <a
+                            href="/services"
+                            class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white border border-gray-200 text-brand-dark font-semibold hover:bg-gray-50 transition-all duration-300 text-center text-sm"
+                        >
+                            View Services
+                        </a>
+                    </div>
+
+                    <!-- Testimonial pull-quote -->
+                    <p class="text-sm font-medium text-gray-400 italic border-l-2 border-brand-primary pl-4 text-left max-w-xs">
+                        "The most transparent bookkeeping experience for modern firms."
+                    </p>
+
+                </div>
+
+                <!-- RIGHT: Image — hidden on mobile, shown md+ -->
+                <div class="hidden md:flex items-center justify-center w-full h-full">
+                    <Heroimg />
+                </div>
+
+            </div>
+        </section>
+    </header>
+</Layout>
