@@ -1,20 +1,82 @@
 ---
+// src/components/Universal/navigation.astro
 const navItems = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
+  { name: 'Services', href: '/services' },
+  { name: 'Process', href: '/process' },
+  { name: 'Pricing', href: '/pricing' },
+  { name: 'About', href: '/about' },
 ];
+
+import CompBtn from "./button.astro";
 ---
 
-<nav class="grid grid-cols-2 section-container py-5 " >
-  <div class="justify-self-start">Logo</div>
-  
-  <ul class="justify-self-end items-center gap-3 hidden  md:flex">
-    {navItems.map(({ label, href }) => (
-      <li><a href={href}>{label}</a></li>
-    ))}
-  </ul>
+<nav class="sticky top-0 z-50 w-full transition-all duration-500" id="main-nav">
+  <div class="mx-auto max-w-7xl px-6 sm:px-10">
+    <div class="flex h-20 items-center justify-between border-b border-gray-100/50">
+      
+      <a href="/" class="group flex items-center gap-2 transition-transform duration-700 hover:scale-105">
+        <div class="h-8 w-8 rounded-lg bg-linear-to-r from-[#89d957] to-[#c9e265] shadow-sm"></div>
+        <span class="font-display text-xl font-bold tracking-tight text-brand-dark">
+          The Goodkeeper<span class="text-[#89d957]">.</span>
+        </span>
+      </a>
 
+      <div class="hidden md:flex items-center gap-10">
+        {navItems.map((item) => (
+          <a 
+            href={item.href} 
+            class="nav-link relative text-sm font-semibold text-gray-500 transition-colors duration-1000 hover:text-brand-dark"
+          >
+            {item.name}
+            <span class="nav-underline" />
+          </a>
+        ))}
+        
+        <CompBtn label="Read Blogs" href="/contact" variant="dark" size="md" />
+      </div>
+
+      <button class="md:hidden p-2 text-brand-dark" aria-label="Toggle Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+    </div>
+  </div>
 </nav>
+
+<style>
+  /* Glassmorphism Effect on Scroll */
+  .scrolled {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    height: 70px;
+  }
+
+  /* Animated Underline */
+  .nav-link .nav-underline {
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #89d957;
+    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .nav-link:hover .nav-underline {
+    width: 100%;
+  }
+</style>
+
+<script>
+  // Simple scroll logic to trigger glass effect
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      nav?.classList.add('scrolled');
+    } else {
+      nav?.classList.remove('scrolled');
+    }
+  });
+</script>

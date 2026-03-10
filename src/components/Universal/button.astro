@@ -1,0 +1,211 @@
+    ---
+    interface Props {
+    label:      string;
+    href?:      string;
+    variant?:  "primary" | "outline" | "ghost" | "dark";
+    size?:     "sm" | "md" | "lg";
+    icon?:     "arrow" | "check" | "external" | "none";
+    iconPos?:  "left" | "right";
+    type?:     "button" | "submit" | "reset";
+    disabled?: boolean;
+    class?:    string;
+    id?:       string;
+    ariaLabel?: string;
+    }
+
+    const {
+    label,
+    href,
+    variant   = "primary",
+    size      = "md",
+    icon      = "arrow",
+    iconPos   = "right",
+    type      = "button",
+    disabled  = false,
+    class: className = "",
+    id,
+    ariaLabel,
+    } = Astro.props;
+
+    // ── Size scale ────────────────────────────────────────
+    const pad   = { sm: "px-4 py-2",    md: "px-5 py-2.5",  lg: "px-7 py-3.5"  };
+    const text  = { sm: "text-xs",      md: "text-sm",      lg: "text-[0.95rem]" };
+    const gap   = { sm: "gap-1.5",      md: "gap-2",        lg: "gap-2.5"        };
+    const iSize = { sm: "w-3 h-3",      md: "w-3.5 h-3.5",  lg: "w-4 h-4"       };
+
+ const v: Record<string, string> = {
+primary: [
+  // 1. Layout & Shape
+  "relative overflow-hidden rounded-lg",
+  
+  // 2. Typography & Color
+  "text-brand-dark font-bold tracking-wide leading-none",
+  
+  // 3. Static Shadow (No fractions)
+  "shadow-[0_4_16_rgba(137,217,87,22)]", /* Use integer percentage for alpha if your config supports it, else /20 */
+
+  // 4. Hardware Acceleration (The Jitter Killers)
+  "antialiased [transform:translateZ(0)] [backface-visibility:hidden] perspective-1000 will-change-transform",
+
+  // 5. Transitions (1000ms)
+  "transition-all duration-1000 ease-in-out",
+
+  // 6. Hover & Active States (No Fractions)
+  "hover:scale-105 hover:brightness-105", 
+  "active:scale-95 active:duration-150", 
+
+  // 7. Focus & Accessibility
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70",
+  "disabled:opacity-50 disabled:pointer-events-none"
+].join(" "),
+outline: [
+  // 1. Base Layout & Typography
+  "relative overflow-hidden bg-white text-brand-dark font-semibold tracking-wide border rounded-lg",
+  
+  // 2. The Border & Shadow (Static)
+  // Replaced /30 with /30 (integer) and used whole numbers for shadow blur
+  "border-brand-primary/30 shadow-[0_1px_2px_rgba(0,0,0,0)]",
+  
+  // 3. Hardware Acceleration (The Jitter Fix)
+  "antialiased [transform:translateZ(0)] [backface-visibility:hidden] will-change-transform",
+  
+  // 4. Transitions (1000ms Duration)
+  "transition-all duration-1000 ease-in-out",
+  
+  // 5. Hover & Active States
+  // Replaced /[0.04] with /5 (closest integer percentage)
+  "hover:border-brand-primary/70 hover:bg-brand-primary/5",
+  "active:scale-95 active:duration-150", 
+  
+  // 6. Accessibility & Disabled
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2",
+  "disabled:opacity-40 disabled:pointer-events-none",
+].join(" "),
+  ghost: `
+    relative bg-transparent text-brand-dark font-semibold rounded-lg
+    transition-all duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+    hover:bg-brand-primary/[0.07]
+    active:scale-[0.975]
+  `,
+  dark: `
+    relative overflow-hidden bg-brand-dark text-white font-bold rounded-lg
+    shadow-[0_4px_16px_rgba(34,40,49,0.16)]
+    transition-all duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+    hover:scale-[1.04] hover:brightness-[1.08]
+    active:scale-[0.975]
+  `,
+};
+
+    const cls = [
+    "inline-flex items-center justify-center whitespace-nowrap select-none font-display leading-none",
+    pad[size], text[size], gap[size],
+    v[variant],
+    className,
+    ].join(" ").replace(/\s+/g, " ").trim();
+
+    const isExternal = href?.startsWith("http");
+
+    // ── SVG Data ──────────────────────────────────────────
+    const icons: Record<string, any> = {
+    arrow: `<path d="M5 12h14M12 5l7 7-7 7"/>`,
+    check: `<polyline points="20 6 9 17 4 12"/>`,
+    external: `<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>`,
+    };
+    ---
+
+    {href ? (
+    <a
+        id={id}
+        href={disabled ? undefined : href}
+        class={cls}
+        aria-label={ariaLabel ?? label}
+        aria-disabled={disabled}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+        target={isExternal ? "_blank" : undefined}
+    >
+        <slot name="inner-render" />
+        {variant === "primary" && <span class="btn-grad" />}
+        {(variant === "primary" || variant === "dark") && <span class="shine" />}
+        
+        {icon !== "none" && iconPos === "left" && (
+        <span class:list={["icon-el relative z-10", iSize[size]]}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} />
+        </span>
+        )}
+        
+        <span class="relative z-10">{label}</span>
+        
+        {icon !== "none" && iconPos === "right" && (
+        <span class:list={["icon-el relative z-10", iSize[size]]}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} />
+        </span>
+        )}
+    </a>
+    ) : (
+    <button id={id} type={type} disabled={disabled} class={cls} aria-label={ariaLabel ?? label}>
+        {variant === "primary" && <span class="btn-grad" />}
+        {(variant === "primary" || variant === "dark") && <span class="shine" />}
+        
+        {icon !== "none" && iconPos === "left" && (
+        <span class:list={["icon-el relative z-10", iSize[size]]}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} />
+        </span>
+        )}
+        
+        <span class="relative z-10">{label}</span>
+        
+        {icon !== "none" && iconPos === "right" && (
+        <span class:list={["icon-el relative z-10", iSize[size]]}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" set:html={icons[icon]} />
+        </span>
+        )}
+    </button>
+    )}
+
+    <style>
+    .btn-grad {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: linear-gradient(90deg, #89d957 0%, #c9e265 100%);
+        transition: opacity 1s ease;
+    }
+
+    .shine {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(
+        108deg,
+        transparent 30%,
+        rgba(255,255,255,0.2) 48%,
+        rgba(255,255,255,0.05) 52%,
+        transparent 70%
+        );
+        transform: translateX(-110%);
+        transition: transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    /* Hover states */
+    :hover > .shine { transform: translateX(110%); }
+    :hover > .btn-grad { opacity: 0.9; }
+
+    .icon-el {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    :hover .icon-el { transform: translateX(4px); }
+
+    @keyframes icon-pop {
+        0%   { transform: scale(1); }
+        45%  { transform: scale(1.25); }
+        100% { transform: scale(1); }
+    }
+
+    :hover svg {
+        animation: icon-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    </style>

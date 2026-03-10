@@ -1,82 +1,146 @@
 ---
 import Layout from "../layouts/base.astro";
 import Navbar from "../components/Universal/navigation.astro";
-import Heroimg from "../components/Hero/heroImage.astro";
+import HeroImage from "../components/home/Hero/heroImage.astro";
+import AboutSection from "../components/home/About/AboutSection.astro";
+import CompBtn from "../components/Universal/button.astro";
 
 const homeSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "The Goodkeeper",
-    description: "High-performance digital solutions for modern brands.",
-    url: "https://yourdomain.com",
+    name: "The GoodKeeper",
+    description: "Professional bookkeeping and financial clarity for modern businesses.",
+    url: "https://thegoodkeeper.com",
+    potentialAction: {
+        "@type": "SearchAction",
+        target: "https://thegoodkeeper.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string",
+    },
 };
 ---
 
 <Layout
-    title="Home"
-    description="The Goodkeeper specializes in building trust through flawless web speed and modern glassmorphism design. Experience the future of web performance."
+    title="The GoodKeeper — Bookkeeping & Financial Clarity"
+    description="We give you your Sundays back. Professional bookkeeping that unburdens your business, satisfies your auditors, and fuels confident growth. Book a free call today."
     schema={homeSchema}
 >
-    <header class=" flex flex-col overflow-hidden">
+    <!-- ══════════════════════════════════════ HERO ══ -->
+    <header class="relative h-screen flex flex-col overflow-hidden bg-white">
+
+        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+            <div class="absolute -top-40 -left-40 w-[640px] h-[640px] rounded-full opacity-[0.18]"
+                 style="background: radial-gradient(circle, var(--color-brand-primary), transparent 70%);"></div>
+            <div class="absolute -bottom-56 -right-32 w-[520px] h-[520px] rounded-full opacity-[0.10]"
+                 style="background: radial-gradient(circle, var(--color-brand-secondary), transparent 70%);"></div>
+            <div class="absolute inset-0 opacity-[0.025]"
+                 style="background-image: radial-gradient(var(--color-brand-dark) 1px, transparent 1px); background-size: 32px 32px;"></div>
+        </div>
+
         <Navbar />
 
-        <section id="Hero" class="grow min-h-0 section-container flex items-center -mt-4 section-spacer">
-            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+        <section
+            id="hero"
+            aria-label="Hero — bookkeeping and financial services"
+            class="relative grow section-container flex items-center"
+        >
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-center">
 
-                <!-- LEFT: Copy -->
-                <div class="flex flex-col items-center md:items-start text-center md:text-left">
-
-                    <!-- Badge -->
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-dark text-xs sm:text-sm font-semibold mb-8 shadow-sm">
-                        <span class="relative flex h-2.5 w-2.5 shrink-0">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-primary"></span>
-                        </span>
-                        Financial Integrity & Growth
+                <!-- LEFT: Image -->
+                <div class="flex items-center justify-center order-2 md:order-1 animate-float">
+                    <div class="w-full max-w-[340px] sm:max-w-[400px] md:max-w-none">
+                        <HeroImage />
                     </div>
+                </div>
 
-                    <!-- Heading -->
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-display font-bold tracking-tight text-brand-dark leading-[1.1] mb-6">
-                        Your books, <br class="hidden sm:block" />
-                        <span class="text-transparent bg-clip-text bg-linear-brand">perfectly kept.</span>
+                <!-- RIGHT: Copy -->
+                <div class="flex flex-col items-center md:items-start text-center md:text-left order-1 md:order-2">
+
+                    <p class="inline-flex items-center gap-2.5 text-[11px] font-bold tracking-[0.2em] uppercase text-brand-dark/50 mb-5 self-center md:self-start">
+                        <span class="block h-px w-8 opacity-100"
+                              style="background: linear-gradient(90deg, var(--color-brand-primary), transparent);"></span>
+                        Giving you your Sundays back
+                        <span class="block h-px w-8 opacity-30"
+                              style="background: linear-gradient(270deg, var(--color-brand-primary), transparent);"></span>
+                    </p>
+
+                    <h1 class="font-display font-bold text-brand-dark tracking-tight leading-[1.04] mb-6"
+                        style="font-size: clamp(2.6rem, 5vw, 4.5rem);">
+                        Time to grow<br class="hidden sm:block" />
+                        your business —<br class="hidden sm:block" />
+                        <span style="background: linear-gradient(90deg, var(--color-brand-primary), var(--color-brand-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            leave the numbers<br class="hidden sm:block" /> to us.
+                        </span>
                     </h1>
 
-                    <!-- Body -->
-                    <p class="text-base sm:text-lg text-gray-500 mb-10 max-w-md leading-relaxed">
-                        We unburden your business from the chaos of bookkeeping. Get
-                        crystal-clear financial statements that satisfy auditors and
-                        empower your growth.
+                    <p class="text-base md:text-[1.05rem] text-gray-500 max-w-[400px] leading-relaxed mb-10">
+                        We handle your books with precision so you can focus on
+                        what you do best. Crystal-clear financials, zero stress,
+                        total confidence.
                     </p>
 
-                    <!-- CTAs -->
-                    <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto mb-12">
-                        <a
-                            href="/get-started"
-                            class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-linear-brand text-brand-dark font-bold shadow-trust hover:scale-105 transition-all duration-500 ease-spring text-center text-sm"
-                        >
-                            Unburden My Books
-                        </a>
-                        <a
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto mb-12">
+                        <CompBtn
+                            label="Learn More"
                             href="/services"
-                            class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white border border-gray-200 text-brand-dark font-semibold hover:bg-gray-50 transition-all duration-300 text-center text-sm"
-                        >
-                            View Services
-                        </a>
+                            variant="primary"
+                            size="lg"
+                            icon="arrow"
+                            ariaLabel="Learn more about our bookkeeping services"
+                        />
+                        <CompBtn
+                            label="Book a Meeting"
+                            href="/contact"
+                            variant="dark"
+                            size="lg"
+                            icon="none"
+                            ariaLabel="Book a free meeting with The GoodKeeper"
+                        />
                     </div>
 
-                    <!-- Testimonial pull-quote -->
-                    <p class="text-sm font-medium text-gray-400 italic border-l-2 border-brand-primary pl-4 text-left max-w-xs">
-                        "The most transparent bookkeeping experience for modern firms."
-                    </p>
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-x-6 gap-y-3">
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-0.5">
+                                {[...Array(5)].map(() => (
+                                    <svg class="w-3.5 h-3.5 text-brand-primary" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    </svg>
+                                ))}
+                            </div>
+                            <span class="text-xs text-gray-400 font-medium">
+                                <strong class="text-brand-dark">4.9</strong> / 5 · 180+ reviews
+                            </span>
+                        </div>
+                        <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
+                        <div class="flex items-center gap-1.5 text-xs text-gray-400 font-medium">
+                            <svg class="w-3.5 h-3.5 text-brand-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                            <span><strong class="text-brand-dark">200+</strong> businesses served</span>
+                        </div>
+                        <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
+                        <div class="flex items-center gap-1.5 text-xs text-gray-400 font-medium">
+                            <svg class="w-3.5 h-3.5 text-brand-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            <span>Set up in <strong class="text-brand-dark">48 hrs</strong></span>
+                        </div>
+                    </div>
 
                 </div>
-
-                <!-- RIGHT: Image — hidden on mobile, shown md+ -->
-                <div class="hidden md:flex items-center justify-end w-full h-full ">
-                    <Heroimg />
-                </div>
-
             </div>
         </section>
+
+        <div class="absolute bottom-0 inset-x-0 h-24 pointer-events-none"
+             style="background: linear-gradient(to bottom, transparent, white);"
+             aria-hidden="true"></div>
     </header>
+
+    <!-- ══════════════════════════════════════ MAIN ══ -->
+    <main>
+        <AboutSection />
+    </main>
+
 </Layout>

@@ -1,0 +1,162 @@
+---
+import CompBtn from "../../Universal/button.astro";
+
+const stats = [
+    { value: "200+", label: "Businesses served"     },
+    { value: "98%",  label: "Client retention rate" },
+    { value: "48h",  label: "Average onboarding"    },
+    { value: "$2M+", label: "Reconciled monthly"    },
+];
+
+const pillars = [
+    {
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+        title: "Precision first",
+        body: "Every cent tracked, every entry verified. We treat your books with the same care you treat your business.",
+    },
+    {
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+        title: "Always on time",
+        body: "Deadlines don't move. Your reports are ready when you need them — no chasing, no excuses.",
+    },
+    {
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+        title: "Human, not robotic",
+        body: "A dedicated bookkeeper who knows your business. Real answers, real conversations — not ticket queues.",
+    },
+];
+---
+
+<section
+    id="about"
+    aria-labelledby="about-heading"
+    class="relative overflow-hidden bg-white">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div class="absolute top-0 inset-x-0 h-px"
+             style="background: linear-gradient(90deg, transparent, var(--color-brand-primary), transparent); opacity: 0.3;"></div>
+        <div class="absolute -right-64 top-1/4 w-[700px] h-[700px] rounded-full opacity-[0.05]"
+             style="background: radial-gradient(circle, var(--color-brand-primary), transparent 70%);"></div>
+        <div class="absolute inset-0 opacity-[0.018]"
+             style="background-image: radial-gradient(var(--color-brand-dark) 1px, transparent 1px); background-size: 28px 28px;"></div>
+    </div>
+
+    <div class="section-container section-spacer relative">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-end mb-20 lg:mb-28">
+            <div>
+                <div class="flex items-center gap-3 mb-7">
+                    <span class="h-px w-10 block"
+                          style="background: linear-gradient(90deg, var(--color-brand-primary), var(--color-brand-secondary));"></span>
+                    <span class="text-[11px] font-bold tracking-[0.2em] uppercase text-brand-dark/40">Who we are</span>
+                </div>
+                <h2
+                    id="about-heading"
+                    class="font-display font-bold text-brand-dark leading-[1.06] tracking-tight"
+                    style="font-size: clamp(2rem, 4vw, 3.5rem);"
+                >
+                    Numbers people<br/>
+                    who actually<br/>
+                    <em class="not-italic" style="background: linear-gradient(90deg, var(--color-brand-primary), var(--color-brand-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        give a damn.
+                    </em>
+                </h2>
+            </div>
+
+            <div class="flex flex-col gap-8 lg:pb-2">
+                <div class="space-y-4">
+                    <p class="text-base md:text-lg text-gray-500 leading-relaxed">
+                        The GoodKeeper was built on a simple frustration: most bookkeepers
+                        treat your business like a spreadsheet. We treat it like it's ours.
+                    </p>
+                    <p class="text-base text-gray-400 leading-relaxed">
+                        Founded in 2018 by a pair of ex-auditors tired of watching great
+                        businesses fail over avoidable financial chaos, we've spent six years
+                        refining a process that's meticulous where it counts and frictionless
+                        everywhere else.
+                    </p>
+                </div>
+                <CompBtn
+                    label="Meet the team"
+                    href="/team"
+                    variant="outline"
+                    size="md"
+                    icon="arrow"
+                    ariaLabel="Meet the GoodKeeper team"
+                />
+            </div>
+        </div>
+
+        <div class="relative mb-20 lg:mb-28">
+            <div
+                class="grid grid-cols-2 lg:grid-cols-4 rounded-2xl overflow-hidden border border-gray-100"
+                style="box-shadow: 0 4px 40px rgba(34,40,49,0.07);"
+            >
+                {stats.map((s, i) => (
+                    <div
+                        class:list={[
+                            "relative flex flex-col items-center justify-center py-10 px-6 text-center gap-2",
+                            "group hover:bg-brand-primary/[0.04] transition-colors duration-300",
+                            i < stats.length - 1 ? "border-r border-gray-100" : "",
+                            i < 2 ? "border-b lg:border-b-0 border-gray-100" : "",
+                        ]}
+                    >
+                        <span
+                            class="absolute top-0 inset-x-6 h-[2px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            style="background: linear-gradient(90deg, var(--color-brand-primary), var(--color-brand-secondary));"
+                            aria-hidden="true"
+                        ></span>
+                        <span
+                            class="font-display font-bold text-brand-dark tabular-nums leading-none"
+                            style="font-size: clamp(2rem, 3.5vw, 2.75rem);"
+                        >
+                            {s.value}
+                        </span>
+                        <span class="text-xs font-medium text-gray-400 uppercase tracking-widest leading-snug">
+                            {s.label}
+                        </span>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {pillars.map((p, i) => (
+                <article
+                    class="group relative flex flex-col gap-5 p-8 rounded-2xl bg-white border border-gray-100 hover:border-brand-primary/25 transition-all duration-300 hover:-translate-y-1"
+                    style="box-shadow: 0 2px 16px rgba(34,40,49,0.05);"
+                >
+                    <div
+                        class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                        style="box-shadow: 0 8px 40px rgba(137,217,87,0.12);"
+                        aria-hidden="true"
+                    ></div>
+                    <div
+                        class="relative w-11 h-11 rounded-xl flex items-center justify-center text-brand-dark shrink-0 transition-transform duration-300 group-hover:scale-105"
+                        style="background: linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-secondary)); box-shadow: 0 4px 14px rgba(137,217,87,0.3);"
+                    >
+                        <span class="w-5 h-5" set:html={p.icon} aria-hidden="true" />
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-display font-bold text-brand-dark text-lg leading-tight">
+                            {p.title}
+                        </h3>
+                        <p class="text-sm text-gray-500 leading-relaxed">
+                            {p.body}
+                        </p>
+                    </div>
+                    <span
+                        class="absolute bottom-6 right-7 font-display font-bold text-[3.5rem] leading-none text-brand-dark/[0.04] select-none pointer-events-none tabular-nums transition-colors duration-300 group-hover:text-brand-primary/10"
+                        aria-hidden="true"
+                    >
+                        {String(i + 1).padStart(2, "0")}
+                    </span>
+                </article>
+            ))}
+        </div>
+
+    </div>
+
+    <div class="absolute bottom-0 inset-x-0 h-px"
+         style="background: linear-gradient(90deg, transparent, var(--color-brand-primary), transparent); opacity: 0.2;"
+         aria-hidden="true"></div>
+</section>  

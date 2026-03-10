@@ -1,74 +1,152 @@
 @import "tailwindcss";
 
 @theme {
-  /* 1. BRAND COLORS */
-  /* Using your signature #89d957 as the primary brand color */
-  --color-brand-primary: #89d957;
-  --color-brand-dark: #1a1a1a;
-  
-  /* 2. SURFACE COLORS */
-  --color-surface-50: #f9fafb;
-  --color-surface-100: #f3f4f6;
 
-  /* 3. TYPOGRAPHY */
-  --font-display: "Outfit", "Inter", sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  /* ── COLORS ─────────────────────────────── */
+  --color-brand-dark:      #222831;  /* dark */
+  --color-brand-primary:   #89d957;  /* gradient from */
+  --color-brand-secondary: #c9e265;  /* gradient to   */
+  --color-surface-soft: #f7f9f4;
+--color-muted:        #6b7280;
 
-  /* 4. SHADOWS & ANIMATION */
-  --shadow-trust: 0 20px 50px rgba(0, 0, 0, 0.05);
-  
-  /* Cubic-bezier for that "expensive" springy feel */
-  --transition-ease-spring: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+  /* ── TYPOGRAPHY ─────────────────────────── */
+  --font-display: "Outfit",      sans-serif;
+  --font-body:    "DM Sans",     sans-serif;
+  --font-mono:    "DM Mono",     monospace;
+
+  --text-xs:   0.75rem;    /* 12px */
+  --text-sm:   0.875rem;   /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg:   1.125rem;   /* 18px */
+  --text-xl:   1.25rem;    /* 20px — F */
+  --text-2xl:  1.625rem;   /* 26px — F */
+  --text-3xl:  2rem;       /* 32px — F */
+  --text-4xl:  3.25rem;    /* 52px — F */
+  --text-5xl:  5.25rem;    /* 84px — F */
+
+  --font-weight-normal:    400;
+  --font-weight-medium:    500;
+  --font-weight-semibold:  600;
+  --font-weight-bold:      700;
+
+  --leading-tight:  1.1;
+  --leading-snug:   1.3;
+  --leading-normal: 1.6;
+
+  --tracking-tight:  -0.03em;
+  --tracking-normal:  0em;
+  --tracking-wide:    0.08em;
+  --tracking-widest:  0.18em;
+
+  /* ── SPACING (Fibonacci-tuned) ───────────
+     8 · 13 · 21 · 34 · 55 · 89 · 144px     */
+  --spacing-2:  0.5rem;    /*  8px */
+  --spacing-3:  0.8125rem; /* 13px */
+  --spacing-5:  1.3125rem; /* 21px */
+  --spacing-8:  2.125rem;  /* 34px */
+  --spacing-13: 3.4375rem; /* 55px */
+  --spacing-21: 5.5625rem; /* 89px */
+  --spacing-34: 9rem;      /* 144px */
+
+  /* ── ANIMATION ──────────────────────────── */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
 }
 
+/* ── BASE ────────────────────────────────── */
 @layer base {
+  svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
-    @apply bg-surface-50 text-brand-dark font-body selection:bg-brand-primary/30;
+    @apply bg-surface-soft text-brand-dark font-body;
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold text-brand-dark;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  h1 { font-size: clamp(2rem, 5vw, var(--text-5xl)); }
+  h2 { font-size: clamp(1.625rem, 3.5vw, var(--text-4xl)); }
+  h3 { font-size: clamp(1.25rem, 2.5vw, var(--text-3xl)); }
+  h4 { font-size: var(--text-xl); }
+
+  p {
+    line-height: var(--leading-normal);
+    @apply text-muted;
+  }
+
+  ::selection {
+    @apply bg-brand-primary/30 text-brand-dark;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-primary rounded-sm;
+  }
+
 }
 
+/* ── COMPONENTS ──────────────────────────── */
 @layer components {
-  /* 5. THE "TRUST" CONTAINER */
-  /* Keeps all content perfectly aligned across all pages */
 
-  /* 6. VERTICAL RHYTHM */
-.section-spacer {
-  @apply py-13 sm:py-21 lg:py-34;
-}
+  .section-container {
+    @apply w-full mx-auto px-5 sm:px-8;
+    max-width: 75rem; /* 1200px */
+  }
 
-.section-container {
+  .section-spacer {
+    @apply py-13 sm:py-21 lg:py-34;
+  }
 
-  @apply mx-auto px-10 md:px-8 sm:px-6  w-full;
-
-}
-
-  /* 7. GLASSMORPHISM */
-  /* Used for the Hero card and Navigation */
   .glassmorphism {
-    @apply bg-white/70 backdrop-blur-xl border border-white/40;
+    @apply bg-white/80 backdrop-blur-md border border-white/30;
   }
 
-  /* 8. BRAND GRADIENTS */
   .bg-linear-brand {
-    background: linear-gradient(135deg, #89d957 0%, #c9e265 100%);
+    background: linear-gradient(90deg, var(--color-brand-primary), var(--color-brand-secondary));
   }
+
+  .shadow-trust {
+    box-shadow: 0 4px 34px rgba(34, 40, 49, 0.07);
+  }
+
 }
 
+/* ── UTILITIES ───────────────────────────── */
 @layer utilities {
-  /* 9. ANIMATIONS */
-  /* Floating effect for the Hero UI elements */
+
+  .ease-spring { transition-timing-function: var(--ease-spring); }
+  .ease-smooth { transition-timing-function: var(--ease-smooth); }
+
   @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    50%       { transform: translateY(-13px); }
   }
 
   .animate-float {
-    animation: float 6s ease-in-out infinite;
+    animation: float 6s var(--ease-smooth) infinite;
   }
 
-  /* Ease-Spring Transition */
-  .ease-spring {
-    transition-timing-function: var(--transition-ease-spring);
-  }
 }
+
+/* color classes
+bg-brand-gradient
+dark
+primary
+secondary
+white
+*/
